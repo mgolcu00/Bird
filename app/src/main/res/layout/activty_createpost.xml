@@ -13,7 +13,7 @@
         android:layout_marginStart="10dp"
         android:layout_marginTop="20dp"
         android:layout_marginBottom="22dp"
-        android:text="Button"
+        android:text="EXIT"
         app:layout_constraintBottom_toTopOf="@+id/maTxt"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

@@ -1,5 +1,6 @@
 package com.example.bird.Activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -20,18 +21,24 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+import java.util.UUID;
+
 public class CreatePostActivity extends AppCompatActivity {
 
-    TextView TextVieww;
-    Button btnExit;
-    Button btnSend;
-    FirebaseAuth mAuth = FirebaseAuth.getInstance();
-    FirebaseDatabase mDatabase=FirebaseDatabase.getInstance();
-    DatabaseReference mRef = mDatabase.getReference("users");
-    DatabaseReference mRef2 = mDatabase.getReference("posts");
-
-    String Url;
-    UserC user;
+    private TextView TextVieww;
+    private Button btnExit;
+    private Button btnSend;
+    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    private FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
+    private DatabaseReference mRef = mDatabase.getReference("users");
+    private DatabaseReference mRef2 = mDatabase.getReference("posts");
+    String date;
+    private String Url;
+    private UserC user;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -43,6 +50,8 @@ public class CreatePostActivity extends AppCompatActivity {
         Url = mAuth.getCurrentUser().getUid();
         final PostData post = new PostData();
         post.setPosttext(String.valueOf(TextVieww.getText()));
+        date = new SimpleDateFormat("MMMM d, yyyy", Locale.getDefault()).format(new Date());
+
 
         mRef.addValueEventListener(new ValueEventListener() {
 
@@ -51,7 +60,7 @@ public class CreatePostActivity extends AppCompatActivity {
                 UserC temp;
                 // This method is called once with the initial value and again
                 // whenever data at this location is updated.
-                temp= dataSnapshot.child(Url).getValue(UserC.class);
+                temp = dataSnapshot.child(Url).getValue(UserC.class);
                 post.setUser(temp);
 
             }
@@ -66,12 +75,15 @@ public class CreatePostActivity extends AppCompatActivity {
         btnSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                post.setCreatingDate(date);
+                String uuid = UUID.randomUUID().toString();
                 post.setPosttext(String.valueOf(TextVieww.getText()));
-                mRef2.child(Url).setValue(post);
-                Toast.makeText(getApplicationContext(), TextVieww.getText(),Toast.LENGTH_LONG).show();
+                mRef2.child(Url + uuid).setValue(post);
+                Toast.makeText(getApplicationContext(), TextVieww.getText(), Toast.LENGTH_LONG).show();
+                startActivity(new Intent(getApplicationContext(), MainActivity.class));
             }
         });
-
 
 
     }

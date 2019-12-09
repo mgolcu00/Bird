@@ -17,7 +17,7 @@
     <item
         android:id="@+id/posts"
         android:enabled="true"
-        android:icon="@drawable/ic_dashboard_black_24dp"
+        android:icon="@drawable/post_selector"
         android:title="Posts"
         app:showAsAction="ifRoom" />
 

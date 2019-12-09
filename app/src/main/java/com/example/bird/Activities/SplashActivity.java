@@ -11,11 +11,18 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.bird.Login.LoginActivity;
 import com.example.bird.R;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
 
 public class SplashActivity extends AppCompatActivity {
     private static final int TIME=2000;//milisecond type
-    ImageView testLogo;
-    FirebaseAuth auth;
+    private ImageView testLogo;
+    private FirebaseAuth auth;
+    private FirebaseDatabase database;
+    private FirebaseStorage storage;
+    private DatabaseReference ref;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,6 +34,14 @@ public class SplashActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
+
+                ref = null;
+                do{
+                    database = FirebaseDatabase.getInstance();
+                    ref = database.getReference();
+                    storage=FirebaseStorage.getInstance();
+                }while (ref==null);
+
                 if(auth.getCurrentUser()!=null){
                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                     startActivity(intent);
@@ -37,5 +52,8 @@ public class SplashActivity extends AppCompatActivity {
                 }
             }
         },TIME);
+
+
+
     }
 }

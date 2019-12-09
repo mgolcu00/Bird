@@ -13,10 +13,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.graphics.drawable.RoundedBitmapDrawable;
+import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
 import androidx.fragment.app.Fragment;
 
 import com.example.bird.Activities.SplashActivity;
@@ -60,15 +63,18 @@ public class ProfileFragment extends Fragment {
     private StorageReference mStorageRef;
     private StorageReference pathRef;
     private Button btnLogout;
+    private ProgressBar pb;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.activity_profile, container, false);
+        pb=v.findViewById(R.id.pbProfile);
         mStorageRef = FirebaseStorage.getInstance().getReference();
         textName = v.findViewById(R.id.txtUserName);
         textLastName = v.findViewById(R.id.txtLastName);
         profilePhoto = v.findViewById(R.id.profilePhoto);
         btnLogout = v.findViewById(R.id.btnLogout);
 
+        pb.setVisibility(View.VISIBLE);
 
         btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,15 +83,6 @@ public class ProfileFragment extends Fragment {
                 startActivity(new Intent(getContext(), SplashActivity.class));
             }
         });
-
-//        textLocation = v.findViewById(R.id.textLocation);
-//        textStatu = v.findViewById(R.id.textStatu);
-//        textEmail = v.findViewById(R.id.textEmail);
-//        textMobileNumb = v.findViewById(R.id.textMobileNumb);
-//        textAddress = v.findViewById(R.id.textAddress);
-//        spinner = v.findViewById(R.id.spinner);
-//        initSpinner(v); //spinner'ı aktive eden metod
-//        spinner.setOnItemSelectedListener(this);
 
         auth = FirebaseAuth.getInstance();
         Read(auth.getCurrentUser().getUid());
@@ -122,8 +119,10 @@ public class ProfileFragment extends Fragment {
                                 URL url = new URL(uri.toString());
                                 Bitmap image = BitmapFactory.decodeStream(url.openConnection().getInputStream());
                                 System.out.println("byte count:" + image.getByteCount());
-                                profilePhoto.setImageBitmap(image);
-
+                                RoundedBitmapDrawable circularBitmapDrawable = RoundedBitmapDrawableFactory.create(getResources(), image);
+                                circularBitmapDrawable.setCircular(true);
+                                profilePhoto.setImageDrawable(circularBitmapDrawable);
+                                pb.setVisibility(View.INVISIBLE);
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
@@ -149,51 +148,9 @@ public class ProfileFragment extends Fragment {
         });
     }
 
-//    public static Bitmap getBitmapFromURL(String src) {
-//        int SDK_INT = android.os.Build.VERSION.SDK_INT;
-//        if (SDK_INT > 8) {
-//            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
-//                    .permitAll().build();
-//            StrictMode.setThreadPolicy(policy);
-//            try {
-//                URL url = new URL(src);
-//                Bitmap image = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-//                System.out.println("byte count:" + image.getByteCount());
-//                return image;
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//                return null;
-//            }
-//        }
-//
-//    }
+    private void Wait() {
 
-//    private void initSpinner(View v) {
-//
-//        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this.getContext(),
-//                R.array.profiledropdown, android.R.layout.simple_spinner_item);
-//        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//        spinner.setAdapter(adapter);
-//
-//    }
+    }
 
-
-//    @Override
-//    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//        String selectedItem = parent.getItemAtPosition(position).toString();
-//        System.out.println(selectedItem);
-//        switch (selectedItem) {
-//            case "Sign Out":
-//                auth.signOut();
-//                startActivity(new Intent(getContext(), SplashActivity.class));
-//                break;
-//            default:
-//                break;
-//        }
-//    }
-//
-//    @Override
-//    public void onNothingSelected(AdapterView<?> parent) {
-//
-//    }
 }
+

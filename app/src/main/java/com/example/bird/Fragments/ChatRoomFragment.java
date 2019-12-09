@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -27,14 +28,17 @@ public class ChatRoomFragment extends Fragment {
     private RoomAdapter roomAdapter;
     private LinearLayoutManager linearLayoutManager;
     private ArrayList<Room> Rooms = new ArrayList<Room>();
-    FirebaseDatabase database = FirebaseDatabase.getInstance();
-    DatabaseReference mRef = database.getReference("roomnames");
+    private FirebaseDatabase database = FirebaseDatabase.getInstance();
+    private DatabaseReference mRef = database.getReference("roomnames");
+    private ProgressBar pb;
     Room r;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.activity_chatrooms, container, false);
+        pb = v.findViewById(R.id.pbRooms);
+        pb.setVisibility(View.VISIBLE);
         recyclerView = v.findViewById(R.id.Rooms);
         r = new Room("100", 100, "TEMP");
         linearLayoutManager = new LinearLayoutManager(getContext());
@@ -57,6 +61,7 @@ public class ChatRoomFragment extends Fragment {
                 }
                 roomAdapter = new RoomAdapter(getContext(), Rooms);
                 recyclerView.setAdapter(roomAdapter);
+                pb.setVisibility(View.INVISIBLE);
             }
 
             @Override
