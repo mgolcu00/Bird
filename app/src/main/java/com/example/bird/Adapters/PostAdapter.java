@@ -91,7 +91,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.Holder> {
             if(PostImageUrl != ""){
                 readStorage(PostImageUrl,PostImage);
             }
-            this.nameTextView.setText(post.getUser().getName());
+            this.nameTextView.setText(post.getUser().getUsername());
             this.lastNameTextView.setText(post.getUser().getLastname());
             this.TextContent.setText(post.getPosttext());
             this.StatusText.setText("statu  -  "+post.getCreatingDate());
