@@ -11,8 +11,8 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.bird.Chat.Room;
-import com.example.bird.Chat.RoomAdapter;
+import com.example.bird.Models.RoomModel;
+import com.example.bird.Adapters.RoomAdapter;
 import com.example.bird.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -27,11 +27,11 @@ public class ChatRoomFragment extends Fragment {
     private RecyclerView recyclerView;
     private RoomAdapter roomAdapter;
     private LinearLayoutManager linearLayoutManager;
-    private ArrayList<Room> Rooms = new ArrayList<Room>();
+    private ArrayList<RoomModel> roomModels = new ArrayList<RoomModel>();
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
     private DatabaseReference mRef = database.getReference("roomnames");
     private ProgressBar pb;
-    Room r;
+    RoomModel r;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -40,7 +40,7 @@ public class ChatRoomFragment extends Fragment {
         pb = v.findViewById(R.id.pbRooms);
         pb.setVisibility(View.VISIBLE);
         recyclerView = v.findViewById(R.id.Rooms);
-        r = new Room("100", 100, "TEMP");
+        r = new RoomModel("100", 100, "TEMP");
         linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(linearLayoutManager);
@@ -53,13 +53,13 @@ public class ChatRoomFragment extends Fragment {
                 // whenever data at this location is updated.
                 for (DataSnapshot ds : dataSnapshot.getChildren()
                 ) {
-                    Room room = new Room();
-                    room.setRoomName(ds.child("RoomName").getValue(String.class));
-                    room.setUserCount(ds.child("UserCount").getValue(int.class));
-                    room.setRoomId(ds.child("id").getValue(String.class));
-                    Rooms.add(room);
+                    RoomModel roomModel = new RoomModel();
+                    roomModel.setRoomName(ds.child("RoomName").getValue(String.class));
+                    roomModel.setUserCount(ds.child("UserCount").getValue(int.class));
+                    roomModel.setRoomId(ds.child("id").getValue(String.class));
+                    roomModels.add(roomModel);
                 }
-                roomAdapter = new RoomAdapter(getContext(), Rooms);
+                roomAdapter = new RoomAdapter(getContext(), roomModels);
                 recyclerView.setAdapter(roomAdapter);
                 pb.setVisibility(View.INVISIBLE);
             }

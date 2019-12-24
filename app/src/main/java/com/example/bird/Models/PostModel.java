@@ -1,17 +1,15 @@
-package com.example.bird.Post;
-
-import com.example.bird.Login.UserC;
+package com.example.bird.Models;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Comparator;
 import java.util.Date;
 
-public class PostData {
+public class PostModel {
     String CreatingDate;
     String Posttext;
     String PostImageUrl;
-    UserC user;
+    UserModel user;
 
     public String getPostImageUrl() {
         return PostImageUrl;
@@ -37,18 +35,18 @@ public class PostData {
         Posttext = posttext;
     }
 
-    public UserC getUser() {
+    public UserModel getUser() {
         return user;
     }
 
 
-    public void setUser(UserC user) {
+    public void setUser(UserModel user) {
         this.user = user;
     }
 
-    public static Comparator<PostData> pstDate = new Comparator<PostData>() {
+    public static Comparator<PostModel> pstDate = new Comparator<PostModel>() {
 
-        public int compare(PostData s1, PostData s2) {
+        public int compare(PostModel s1, PostModel s2) {
 
             String date1 = s1.getCreatingDate().toUpperCase();
             String date2 = s2.getCreatingDate().toUpperCase();

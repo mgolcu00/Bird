@@ -1,6 +1,6 @@
-package com.example.bird.Login;
+package com.example.bird.Models;
 
-public class UserC {
+public class UserModel {
     String name;
     String email;
     String pass;
@@ -8,15 +8,15 @@ public class UserC {
     String CreationDate;
     String ImageUrl;
 
-    public UserC(){
+    public UserModel(){
 
     }
-    public UserC(String n, String l){
+    public UserModel(String n, String l){
         this.name=n;
         this.lastname=l;
     }
 
-    public UserC(String n, String e, String p, String l, String d) {
+    public UserModel(String n, String e, String p, String l, String d) {
         this.name = n;
         this.email = e;
         this.pass = p;

@@ -17,10 +17,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.bird.Login.UserC;
-import com.example.bird.Post.PostData;
+import com.example.bird.Models.UserModel;
+import com.example.bird.Models.PostModel;
 import com.example.bird.R;
-import com.example.bird.Utils.GlideUtil;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -53,7 +52,7 @@ public class CreatePostActivity extends AppCompatActivity {
     String date;
     private String Url;
     private String ImageUrl;
-    private UserC user;
+    private UserModel user;
     private Uri filePath;
     private ImageView PostImageView;
     private Button btnAdd;
@@ -72,7 +71,7 @@ public class CreatePostActivity extends AppCompatActivity {
         storage=FirebaseStorage.getInstance();
         mStorageRef= storage.getReference();
         Url = mAuth.getCurrentUser().getUid();
-        final PostData post = new PostData();
+        final PostModel post = new PostModel();
         post.setPosttext(String.valueOf(TextVieww.getText()));
         date = new SimpleDateFormat("MMMM d, yyyy", Locale.getDefault()).format(new Date());
 
@@ -81,10 +80,10 @@ public class CreatePostActivity extends AppCompatActivity {
 
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                UserC temp;
+                UserModel temp;
                 // This method is called once with the initial value and again
                 // whenever data at this location is updated.
-                temp = dataSnapshot.child(Url).getValue(UserC.class);
+                temp = dataSnapshot.child(Url).getValue(UserModel.class);
                 post.setUser(temp);
 
             }

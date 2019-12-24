@@ -1,8 +1,6 @@
-package com.example.bird.Chat;
+package com.example.bird.Activities;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.StrictMode;
@@ -22,12 +20,10 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.drawable.RoundedBitmapDrawable;
-import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.bird.Login.RegisterActivity;
+import com.example.bird.Models.MessageModel;
 import com.example.bird.R;
 import com.example.bird.Utils.GlideUtil;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -67,7 +63,7 @@ public class ChatActivity extends AppCompatActivity {
     private FirebaseAuth mFirebaseAuth;
     private FirebaseUser mFirebaseUser;
     private DatabaseReference mFirebaseDatabaseReference;
-    private FirebaseRecyclerAdapter<Messeage, MessageViewHolder>
+    private FirebaseRecyclerAdapter<MessageModel, MessageViewHolder>
             mFirebaseAdapter;
     private Button mSendButton;
     private RecyclerView mMessageRecyclerView;
@@ -162,10 +158,10 @@ public class ChatActivity extends AppCompatActivity {
         mMessageRecyclerView.setLayoutManager(mLinearLayoutManager);
 
         mFirebaseDatabaseReference = FirebaseDatabase.getInstance().getReference();
-        SnapshotParser<Messeage> parser = new SnapshotParser<Messeage>() {
+        SnapshotParser<MessageModel> parser = new SnapshotParser<MessageModel>() {
             @Override
-            public Messeage parseSnapshot(DataSnapshot dataSnapshot) {
-                Messeage friendlyMessage = dataSnapshot.getValue(Messeage.class);
+            public MessageModel parseSnapshot(DataSnapshot dataSnapshot) {
+                MessageModel friendlyMessage = dataSnapshot.getValue(MessageModel.class);
                 if (friendlyMessage != null) {
                     friendlyMessage.setId(dataSnapshot.getKey());
                 }
@@ -174,11 +170,11 @@ public class ChatActivity extends AppCompatActivity {
         };
 
         DatabaseReference messagesRef = mFirebaseDatabaseReference.child(MESSAGES_CHILD);
-        FirebaseRecyclerOptions<Messeage> options =
-                new FirebaseRecyclerOptions.Builder<Messeage>()
+        FirebaseRecyclerOptions<MessageModel> options =
+                new FirebaseRecyclerOptions.Builder<MessageModel>()
                         .setQuery(messagesRef, parser)
                         .build();
-        mFirebaseAdapter = new FirebaseRecyclerAdapter<Messeage, MessageViewHolder>(options) {
+        mFirebaseAdapter = new FirebaseRecyclerAdapter<MessageModel, MessageViewHolder>(options) {
             @Override
             public MessageViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
                 LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
@@ -190,7 +186,7 @@ public class ChatActivity extends AppCompatActivity {
             @Override
             protected void onBindViewHolder(final MessageViewHolder viewHolder,
                                             int position,
-                                            Messeage friendlyMessage) {
+                                            MessageModel friendlyMessage) {
                 mProgressBar.setVisibility(ProgressBar.INVISIBLE);
                 if (friendlyMessage.getText() != null) {
                     viewHolder.messageTextView.setText(friendlyMessage.getText());
@@ -249,13 +245,13 @@ public class ChatActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View view) {
-                Messeage messeage = new
-                        Messeage(mMessageEditText.getText().toString(),
+                MessageModel messageModel = new
+                        MessageModel(mMessageEditText.getText().toString(),
                         mUsername);
-                messeage.setPpUrl(mPhotoUrl);
-                Log.i("TEST", "Name: " + messeage.getName() + " | Text: " + messeage.getText());
+                messageModel.setPpUrl(mPhotoUrl);
+                Log.i("TEST", "Name: " + messageModel.getName() + " | Text: " + messageModel.getText());
                 mFirebaseDatabaseReference.child(MESSAGES_CHILD)
-                        .push().setValue(messeage);
+                        .push().setValue(messageModel);
                 mMessageEditText.setText("");
             }
         });

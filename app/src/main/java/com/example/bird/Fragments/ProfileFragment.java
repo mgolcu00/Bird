@@ -23,7 +23,7 @@ import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
 import androidx.fragment.app.Fragment;
 
 import com.example.bird.Activities.SplashActivity;
-import com.example.bird.Login.UserC;
+import com.example.bird.Models.UserModel;
 import com.example.bird.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -37,10 +37,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLConnection;
 
 
 public class ProfileFragment extends Fragment {
@@ -50,7 +47,7 @@ public class ProfileFragment extends Fragment {
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
     private DatabaseReference myRef = database.getReference("users");
     private String TAG = "Profile Fragment";
-    private UserC user;
+    private UserModel user;
     private TextView textName;
     private TextView textLastName;
     private TextView textLocation;

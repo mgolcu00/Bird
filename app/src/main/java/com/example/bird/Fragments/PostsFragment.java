@@ -15,9 +15,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.bird.Activities.CreatePostActivity;
-import com.example.bird.Login.UserC;
-import com.example.bird.Post.PostAdapter;
-import com.example.bird.Post.PostData;
+import com.example.bird.Models.UserModel;
+import com.example.bird.Adapters.PostAdapter;
+import com.example.bird.Models.PostModel;
 import com.example.bird.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
@@ -28,7 +28,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 
 public class PostsFragment extends Fragment {
@@ -38,7 +37,7 @@ public class PostsFragment extends Fragment {
     private LinearLayoutManager linearLayoutManager;
     private FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
     private DatabaseReference mRef = mDatabase.getReference("posts");
-    private ArrayList<PostData> posts = new ArrayList<PostData>();
+    private ArrayList<PostModel> posts = new ArrayList<PostModel>();
     private FloatingActionButton fab;
     public ProgressBar pbPOST;
 
@@ -69,14 +68,14 @@ public class PostsFragment extends Fragment {
 
                 for (DataSnapshot ds : dataSnapshot.getChildren()
                 ) {
-                    PostData postD = new PostData();
-                    postD.setUser(ds.child("user").getValue(UserC.class));
+                    PostModel postD = new PostModel();
+                    postD.setUser(ds.child("user").getValue(UserModel.class));
                     postD.setPosttext(ds.child("posttext").getValue(String.class));
                     postD.setCreatingDate(ds.child("creatingDate").getValue(String.class));
                     postD.setPostImageUrl(ds.child("postImageUrl").getValue(String.class));
                     posts.add(postD);
                 }
-                Collections.sort(posts, PostData.pstDate);
+                Collections.sort(posts, PostModel.pstDate);
                 PostAdapter adapter = new PostAdapter(getContext(), posts);
                 recyclerView.setAdapter(adapter);
                 pbPOST.setVisibility(View.INVISIBLE);

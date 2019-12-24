@@ -1,16 +1,16 @@
-package com.example.bird.Chat;
+package com.example.bird.Models;
 
-public class Room {
+public class RoomModel {
     private String RoomName;
     private int UserCount;
     private String id;
 
 //empty consturaction
-    public Room() {
+    public RoomModel() {
     }
 
 
-    public Room(String id, int c, String n) {
+    public RoomModel(String id, int c, String n) {
         this.id = id;
         this.UserCount = c;
         this.RoomName = n;

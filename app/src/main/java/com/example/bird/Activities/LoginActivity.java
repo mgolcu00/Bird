@@ -1,4 +1,4 @@
-package com.example.bird.Login;
+package com.example.bird.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,8 +14,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.bird.Activities.MainActivity;
-import com.example.bird.Chat.ChatRoomsActivity;
 import com.example.bird.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;

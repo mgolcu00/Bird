@@ -1,4 +1,4 @@
-package com.example.bird.Post;
+package com.example.bird.Adapters;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -14,10 +14,9 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.core.graphics.drawable.RoundedBitmapDrawable;
-import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.bird.Models.PostModel;
 import com.example.bird.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -30,11 +29,11 @@ import java.util.ArrayList;
 
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.Holder> {
 
-    ArrayList<PostData> postList;
+    ArrayList<PostModel> postList;
     LayoutInflater inflater;
     Context context;
 
-    public PostAdapter(Context ctx, ArrayList<PostData> postD) {
+    public PostAdapter(Context ctx, ArrayList<PostModel> postD) {
         this.context = ctx;
         this.inflater = LayoutInflater.from(context);
         this.postList = postD;
@@ -50,7 +49,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.Holder> {
 
     @Override
     public void onBindViewHolder(@NonNull PostAdapter.Holder holder, int position) {
-        PostData selectedPost = postList.get(position);
+        PostModel selectedPost = postList.get(position);
         holder.setData(selectedPost,position);
     }
 
@@ -85,7 +84,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.Holder> {
             PostImage=itemView.findViewById(R.id.PostImageAdded);
         }
 
-        public void setData(PostData post, int position) {
+        public void setData(PostModel post, int position) {
             this.PhotoUrl = post.getUser().getImageUrl();
             this.PostImageUrl=post.getPostImageUrl();
             readStorage(PhotoUrl,profilePic);

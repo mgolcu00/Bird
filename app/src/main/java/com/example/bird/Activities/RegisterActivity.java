@@ -1,4 +1,4 @@
-package com.example.bird.Login;
+package com.example.bird.Activities;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -19,7 +19,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.bird.Activities.MainActivity;
+import com.example.bird.Models.UserModel;
 import com.example.bird.R;
 import com.example.bird.Utils.GlideUtil;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -118,7 +118,7 @@ public class RegisterActivity extends AppCompatActivity {
                     });
                     snackbar.show();
                 } else {
-                    UserC user = new UserC(name, email, pass, lastname, DateValue);
+                    UserModel user = new UserModel(name, email, pass, lastname, DateValue);
 
                     uploadImage(mStorageRef);
                     if (ImageUrl.equals("")) {
@@ -219,7 +219,7 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
 
-    void Reg(final UserC user, final View v) {
+    void Reg(final UserModel user, final View v) {
         pb.setVisibility(View.VISIBLE);
         mAuth.createUserWithEmailAndPassword(user.getEmail(), user.getPass())
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {

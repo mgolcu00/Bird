@@ -1,6 +1,6 @@
-package com.example.bird.Chat;
+package com.example.bird.Models;
 
-public class Messeage {
+public class MessageModel {
     private String id;
     private String text;
     private String name;
@@ -8,12 +8,12 @@ public class Messeage {
 
 
 
-    public Messeage(String text, String name) {
+    public MessageModel(String text, String name) {
         this.text = text;
         this.name = name;
     }
 
-    public Messeage() {
+    public MessageModel() {
 
     }
 

@@ -1,4 +1,4 @@
-package com.example.bird.Chat;
+package com.example.bird.Adapters;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,18 +11,20 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.Adapter;
 
+import com.example.bird.Activities.ChatActivity;
+import com.example.bird.Models.RoomModel;
 import com.example.bird.R;
 
 import java.util.ArrayList;
 
 public class RoomAdapter extends Adapter<RoomAdapter.MyViewHolder> {
-    ArrayList<Room> mRooms;
+    ArrayList<RoomModel> mRoomModels;
     LayoutInflater mInflater;
     Context context;
 
-    public RoomAdapter(Context ctx, ArrayList<Room> rooms) {
+    public RoomAdapter(Context ctx, ArrayList<RoomModel> roomModels) {
         this.mInflater = LayoutInflater.from(ctx);
-        this.mRooms = rooms;
+        this.mRoomModels = roomModels;
         this.context = ctx;
     }
 
@@ -36,22 +38,22 @@ public class RoomAdapter extends Adapter<RoomAdapter.MyViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        Room selectedRoom = mRooms.get(position);
-        holder.setData(selectedRoom, position);
+        RoomModel selectedRoomModel = mRoomModels.get(position);
+        holder.setData(selectedRoomModel, position);
     }
 
 
     @Override
     public int getItemCount() {
 
-        return mRooms.size();
+        return mRoomModels.size();
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView Title;
         TextView UserCount;
         Context context;
-        Room sr;
+        RoomModel sr;
 
         public MyViewHolder(@NonNull View itemView, Context ctx) {
             super(itemView);
@@ -69,10 +71,10 @@ public class RoomAdapter extends Adapter<RoomAdapter.MyViewHolder> {
             });
         }
 
-        public void setData(Room selectedRoom, int position) {
-            this.Title.setText(selectedRoom.getRoomName());
-            this.UserCount.setText(selectedRoom.getRoomCount() + " Kişi aktif");
-            this.sr = selectedRoom;
+        public void setData(RoomModel selectedRoomModel, int position) {
+            this.Title.setText(selectedRoomModel.getRoomName());
+            this.UserCount.setText(selectedRoomModel.getRoomCount() + " Kişi aktif");
+            this.sr = selectedRoomModel;
 
         }
 

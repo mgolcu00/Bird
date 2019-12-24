@@ -23,13 +23,13 @@
             android:name=".Activities.MainActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Login.LoginActivity"
+            android:name=".Activities.LoginActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Login.RegisterActivity"
+            android:name=".Activities.RegisterActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Chat.ChatActivity"
+            android:name=".Activities.ChatActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".Chat.ChatRoomsActivity"
