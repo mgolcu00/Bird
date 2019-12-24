@@ -52,7 +52,7 @@ public class ProfileFragment extends Fragment {
     private TextView textName;
     private TextView textLastName;
     private TextView textLocation;
-    private TextView textStatu;
+    private TextView txtStatus;
     private TextView textEmail;
     private TextView textMobileNumb;
     private TextView textAddress;
@@ -78,6 +78,7 @@ public class ProfileFragment extends Fragment {
         btnPhone=v.findViewById(R.id.btnPhone);
         btnLocation=v.findViewById(R.id.btnLocation);
         auth = FirebaseAuth.getInstance();
+        txtStatus=v.findViewById(R.id.txtStatusProfile);
         Read(auth.getCurrentUser().getUid());
         pb.setVisibility(View.VISIBLE);
 
@@ -121,18 +122,19 @@ public class ProfileFragment extends Fragment {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // This method is called once with the initial value and again
                 // whenever data at this location is updated.
-                String name = (String) dataSnapshot.child(url).child("name").getValue();
-                String lastname = (String) dataSnapshot.child(url).child("lastname").getValue();
-                String pass = (String) dataSnapshot.child(url).child("pass").getValue();
-                String email = (String) dataSnapshot.child(url).child("email").getValue();
-                String CreationDate = (String) dataSnapshot.child(url).child("CreationDate").getValue();
-                String PhotoUrl = (String) dataSnapshot.child(url).child("imageUrl").getValue();
+                user= dataSnapshot.child(url).getValue(UserModel.class);
+//                String name = (String) dataSnapshot.child(url).child("username").getValue();
+//                String lastname = (String) dataSnapshot.child(url).child("lastname").getValue();
+//                String pass = (String) dataSnapshot.child(url).child("pass").getValue();
+//                String email = (String) dataSnapshot.child(url).child("email").getValue();
+//                String CreationDate = (String) dataSnapshot.child(url).child("CreationDate").getValue();
+//                String PhotoUrl = (String) dataSnapshot.child(url).child("imageUrl").getValue();
                 //Toast.makeText("TAGG",PhotoUrl,Toast.LENGTH_LONG).show();
-                Log.i("Tag(pp)", PhotoUrl);
+                Log.i("Tag(pp)", user.getImageUrl());
 
 
-                pathRef = mStorageRef.child("images/" + PhotoUrl);
-                mStorageRef.child("images/" + PhotoUrl).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                pathRef = mStorageRef.child("images/" + user.getImageUrl());
+                mStorageRef.child("images/" + user.getImageUrl()).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
                     public void onSuccess(Uri uri) {
                         Log.i("Tag(pp)", uri.toString());
@@ -161,8 +163,10 @@ public class ProfileFragment extends Fragment {
                         // Handle any errors
                     }
                 });
-                textName.setText(name);
-                textLastName.setText(lastname);
+                textName.setText(user.getUsername());
+                textLastName.setText(user.getLastname());
+                txtStatus.setText(user.getStatus());
+
 
             }
 

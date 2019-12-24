@@ -69,7 +69,6 @@ public class PostsFragment extends Fragment {
                 for (DataSnapshot ds : dataSnapshot.getChildren()
                 ) {
                     PostModel postD = new PostModel();
-                    postD.setUser(ds.child("user").getValue(UserModel.class));
                     postD.setPosttext(ds.child("posttext").getValue(String.class));
                     postD.setCreatingDate(ds.child("creatingDate").getValue(String.class));
                     postD.setPostImageUrl(ds.child("postImageUrl").getValue(String.class));

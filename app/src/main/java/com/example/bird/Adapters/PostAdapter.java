@@ -14,12 +14,20 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.graphics.drawable.RoundedBitmapDrawable;
+import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.bird.Models.PostModel;
+import com.example.bird.Models.UserModel;
 import com.example.bird.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -50,7 +58,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.Holder> {
     @Override
     public void onBindViewHolder(@NonNull PostAdapter.Holder holder, int position) {
         PostModel selectedPost = postList.get(position);
-        holder.setData(selectedPost,position);
+        holder.setData(selectedPost, position);
     }
 
     @Override
@@ -63,42 +71,50 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.Holder> {
 
         StorageReference mStorageRef;
         StorageReference pathRef;
+        FirebaseDatabase database;
+        DatabaseReference mRef;
         TextView nameTextView;
         TextView lastNameTextView;
         TextView TextContent;
         TextView StatusText;
         ImageView profilePic;
-        String PhotoUrl,PostImageUrl;
+        String PhotoUrl, PostImageUrl;
         ProgressBar pb;
         ImageView PostImage;
+        UserModel user;
+
         public Holder(@NonNull View itemView) {
             super(itemView);
-            pb=itemView.findViewById(R.id.pbItem);
+            pb = itemView.findViewById(R.id.pbItem);
             pb.setVisibility(View.VISIBLE);
             mStorageRef = FirebaseStorage.getInstance().getReference();
             nameTextView = itemView.findViewById(R.id.txtName2);
             lastNameTextView = itemView.findViewById(R.id.txtLastName2);
             TextContent = itemView.findViewById(R.id.txtTextArea);
             StatusText = itemView.findViewById(R.id.txtStatus2);
-            profilePic=itemView.findViewById(R.id.imgProfilePic);
-            PostImage=itemView.findViewById(R.id.PostImageAdded);
+            profilePic = itemView.findViewById(R.id.imgProfilePic);
+            PostImage = itemView.findViewById(R.id.PostImageAdded);
+            database = FirebaseDatabase.getInstance();
+            mRef = database.getReference("users");
         }
 
         public void setData(PostModel post, int position) {
-            this.PhotoUrl = post.getUser().getImageUrl();
-            this.PostImageUrl=post.getPostImageUrl();
-            readStorage(PhotoUrl,profilePic);
-            if(PostImageUrl != ""){
-                readStorage(PostImageUrl,PostImage);
+
+            Read(post.getUserId());
+            this.PhotoUrl = user.getImageUrl();
+            this.PostImageUrl = post.getPostImageUrl();
+            readStorage(PhotoUrl, profilePic);
+            if (PostImageUrl != "") {
+                readStorage(PostImageUrl, PostImage);
             }
-            this.nameTextView.setText(post.getUser().getUsername());
-            this.lastNameTextView.setText(post.getUser().getLastname());
+            this.nameTextView.setText(user.getUsername());
+            this.lastNameTextView.setText(user.getLastname());
             this.TextContent.setText(post.getPosttext());
-            this.StatusText.setText("statu  -  "+post.getCreatingDate());
+            this.StatusText.setText(user.getStatus());
 
         }
 
-        public void readStorage(String PhotoUrl, final ImageView i){
+        public void readStorage(String PhotoUrl, final ImageView i) {
             pathRef = mStorageRef.child("images/" + PhotoUrl);
             mStorageRef.child("images/" + PhotoUrl).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                 @Override
@@ -112,11 +128,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.Holder> {
                         try {
                             URL url = new URL(uri.toString());
                             Bitmap image = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-//                            System.out.println("byte count:" + image.getByteCount());
-//                            Bitmap b =  Bitmap.createScaledBitmap(image,250,250,false);
-//                            RoundedBitmapDrawable circularBitmapDrawable = RoundedBitmapDrawableFactory.create(itemView.getResources(), b);
-//                            circularBitmapDrawable.setCircular(true);
-//                            i.setImageDrawable(circularBitmapDrawable);
                             i.setImageBitmap(image);
                             pb.setVisibility(View.INVISIBLE);
                         } catch (IOException e) {
@@ -129,15 +140,33 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.Holder> {
                 @Override
                 public void onFailure(@NonNull Exception exception) {
                     // Handle any errors
-                    Log.i("Storage","HATA");
+                    Log.i("Storage", "HATA");
                 }
             });
         }
+
         @Override
         public void onClick(View v) {
 
         }
+
+        void Read(final String url) {
+            mRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    user = dataSnapshot.child(url).getValue(UserModel.class);
+                    Log.i("Tag(pp)", user.getImageUrl());
+                }
+                @Override
+                public void onCancelled(DatabaseError error) {
+                    // Failed to read value
+                    Log.w("TAG", "Failed to read value.", error.toException());
+                }
+            });
+        }
     }
+
+
 }
 
 

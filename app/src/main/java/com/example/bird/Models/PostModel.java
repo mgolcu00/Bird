@@ -13,11 +13,10 @@ public class PostModel {
     String EventLocation;
     String Posttext;
     String PostImageUrl;
-    UserModel user;
     public PostModel(){
 
     }
-    public PostModel(String userId, String postId, String creatingDate, String eventDate, String eventLocation, String posttext, String postImageUrl, UserModel user) {
+    public PostModel(String userId, String postId, String creatingDate, String eventDate, String eventLocation, String posttext, String postImageUrl) {
         UserId = userId;
         PostId = postId;
         CreatingDate = creatingDate;
@@ -25,7 +24,6 @@ public class PostModel {
         EventLocation = eventLocation;
         Posttext = posttext;
         PostImageUrl = postImageUrl;
-        this.user = user;
     }
 
     public String getPostId() {
@@ -84,14 +82,7 @@ public class PostModel {
         Posttext = posttext;
     }
 
-    public UserModel getUser() {
-        return user;
-    }
 
-
-    public void setUser(UserModel user) {
-        this.user = user;
-    }
 
     public static Comparator<PostModel> pstDate = new Comparator<PostModel>() {
 

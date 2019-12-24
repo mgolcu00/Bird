@@ -9,6 +9,7 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -42,9 +43,13 @@ import java.util.UUID;
 public class CreatePostActivity extends AppCompatActivity {
 
     private static final int PICK_IMAGE_REQUEST =71 ;
-    private TextView TextVieww;
     private Button btnExit;
     private Button btnSend;
+    private Button btnImageAdd;
+    private EditText edtDescription;
+    private EditText edtLocation;
+    private EditText edtDate;
+
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
     private DatabaseReference mRef = mDatabase.getReference("users");
@@ -55,24 +60,28 @@ public class CreatePostActivity extends AppCompatActivity {
     private UserModel user;
     private Uri filePath;
     private ImageView PostImageView;
-    private Button btnAdd;
     private FirebaseStorage storage;
     private StorageReference mStorageRef;
+    private PostModel post;
+    //UserModel temp;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activty_createpost);
-        TextVieww = findViewById(R.id.maTxt);
-        btnSend = findViewById(R.id.btnPostSend);
-        btnExit = findViewById(R.id.btnPostExit);
-        btnAdd=findViewById(R.id.btnAddImage);
-        PostImageView=findViewById(R.id.PostImageAdded);
+
+        btnSend = findViewById(R.id.btnSendCreatePost);
+        btnExit = findViewById(R.id.btnexitCreatePost);
+        btnImageAdd=findViewById(R.id.AddImage);
+        edtDescription=findViewById(R.id.edtDescirption);
+        edtLocation=findViewById(R.id.edtLocation);
+        edtDate=findViewById(R.id.edtDate);
+        PostImageView=findViewById(R.id.imgPostimage);
         storage=FirebaseStorage.getInstance();
         mStorageRef= storage.getReference();
         Url = mAuth.getCurrentUser().getUid();
-        final PostModel post = new PostModel();
-        post.setPosttext(String.valueOf(TextVieww.getText()));
+
+
         date = new SimpleDateFormat("MMMM d, yyyy", Locale.getDefault()).format(new Date());
 
 
@@ -80,11 +89,9 @@ public class CreatePostActivity extends AppCompatActivity {
 
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                UserModel temp;
-                // This method is called once with the initial value and again
+                               // This method is called once with the initial value and again
                 // whenever data at this location is updated.
-                temp = dataSnapshot.child(Url).getValue(UserModel.class);
-                post.setUser(temp);
+                user = dataSnapshot.child(Url).getValue(UserModel.class);
 
             }
 
@@ -99,18 +106,16 @@ public class CreatePostActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                post.setCreatingDate(date);
-                uploadImage(mStorageRef);
                 String uuid = UUID.randomUUID().toString();
-                post.setPosttext(String.valueOf(TextVieww.getText()));
+                post= new PostModel(user.getId(),uuid,date,edtDate.getText().toString(),edtLocation.getText().toString(),edtDescription.getText().toString(),"");
+                uploadImage(mStorageRef);
                 post.setPostImageUrl(ImageUrl);
-                mRef2.child(Url + uuid).setValue(post);
-                Toast.makeText(getApplicationContext(), TextVieww.getText(), Toast.LENGTH_LONG).show();
+                mRef2.child(post.getPostId()).setValue(post);
                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
             }
         });
 
-        btnAdd.setOnClickListener(new View.OnClickListener() {
+        btnImageAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 chooseImage();
