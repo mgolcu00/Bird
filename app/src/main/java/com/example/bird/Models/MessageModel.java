@@ -5,6 +5,8 @@ public class MessageModel {
     private String text;
     private String name;
     private String ppUrl;
+    private String UserId;
+    private String DateTime;
 
 
 
@@ -17,35 +19,52 @@ public class MessageModel {
 
     }
 
-    public String getPpUrl() {
-        return ppUrl;
-    }
-
-    public void setPpUrl(String ppUrl) {
-        this.ppUrl = ppUrl;
-    }
 
     public String getId() {
         return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getText() {
         return text;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public String getPpUrl() {
+        return ppUrl;
+    }
+
+    public String getUserId() {
+        return UserId;
+    }
+
+    public String getDateTime() {
+        return DateTime;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
     public void setText(String text) {
         this.text = text;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setPpUrl(String ppUrl) {
+        this.ppUrl = ppUrl;
+    }
+
+    public void setUserId(String userId) {
+        UserId = userId;
+    }
+
+    public void setDateTime(String dateTime) {
+        DateTime = dateTime;
     }
 }
