@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
@@ -56,6 +57,9 @@ public class ProfileFragment extends Fragment {
     private TextView textMobileNumb;
     private TextView textAddress;
     private Spinner spinner;
+    private ImageButton btnMail;
+    private ImageButton btnPhone;
+    private ImageButton btnLocation;
     private ImageView profilePhoto;
     private StorageReference mStorageRef;
     private StorageReference pathRef;
@@ -69,7 +73,10 @@ public class ProfileFragment extends Fragment {
         textName = v.findViewById(R.id.txtUserName);
         textLastName = v.findViewById(R.id.txtLastName);
         profilePhoto = v.findViewById(R.id.profilePhoto);
-        btnLogout = v.findViewById(R.id.btnLogout);
+        btnLogout = v.findViewById(R.id.btnLogOut);
+        btnMail=v.findViewById(R.id.btnEmail);
+        btnPhone=v.findViewById(R.id.btnPhone);
+        btnLocation=v.findViewById(R.id.btnLocation);
         auth = FirebaseAuth.getInstance();
         Read(auth.getCurrentUser().getUid());
         pb.setVisibility(View.VISIBLE);
@@ -81,6 +88,28 @@ public class ProfileFragment extends Fragment {
                 startActivity(new Intent(getContext(), SplashActivity.class));
             }
         });
+
+        btnMail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        btnPhone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        btnLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
 
 
         return v;

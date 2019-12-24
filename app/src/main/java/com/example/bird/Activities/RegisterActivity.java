@@ -77,7 +77,7 @@ public class RegisterActivity extends AppCompatActivity {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(activty_register);
-        userF = mAuth.getCurrentUser();
+
         btnSend = findViewById(R.id.btnSend);
         edtEmail = findViewById(R.id.edtEmail);
         edtName = findViewById(R.id.edtName);
@@ -89,6 +89,7 @@ public class RegisterActivity extends AppCompatActivity {
 
         profileImage = findViewById(R.id.imgReg);
         mAuth = FirebaseAuth.getInstance();
+        userF = mAuth.getCurrentUser();
         database = FirebaseDatabase.getInstance();
         mStorageRef = FirebaseStorage.getInstance().getReference();
         myRef = database.getReference("users");
@@ -120,7 +121,7 @@ public class RegisterActivity extends AppCompatActivity {
                     });
                     snackbar.show();
                 } else {
-                    user = new UserModel(userF.getUid(), name, lastname, email, pass, DateValue, "", "05xx xxx xx xx", "Uye", "Sakarya");
+                    user = new UserModel("", name, lastname, email, pass, DateValue, "", "05xx xxx xx xx", "Uye", "Sakarya");
 
                     uploadImage(mStorageRef);
                     if (ImageUrl.equals("")) {
@@ -230,7 +231,8 @@ public class RegisterActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "createUserWithEmail:success");
-
+                            userF=mAuth.getCurrentUser();
+                            user.setId(userF.getUid());
                             //database
                             myRef.child(Objects.requireNonNull(userF.getUid())).setValue(user);
                             snackbar.make(v, "Register success", Snackbar.LENGTH_LONG).show();
