@@ -118,7 +118,7 @@ public class RegisterActivity extends AppCompatActivity {
                     });
                     snackbar.show();
                 } else {
-                    UserModel user = new UserModel(name, email, pass, lastname, DateValue);
+                    UserModel user = new UserModel(name, email, pass, lastname, DateValue,);
 
                     uploadImage(mStorageRef);
                     if (ImageUrl.equals("")) {
