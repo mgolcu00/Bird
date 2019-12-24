@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/GeneralLinearLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/PostInfoRelativeLayou"
+        android:layout_width="match_parent"
+        android:layout_height="124dp">
+
+        <TextView
+            android:id="@+id/txtLastName2"
+            android:layout_width="145dp"
+            android:layout_height="60dp"
+            android:textAlignment="gravity"
+            android:gravity="center"
+            android:layout_alignParentRight="true"
+            android:text="LASTNAME" />
+
+        <ImageView
+            android:id="@+id/imgProfilePic"
+            android:layout_width="115dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            app:srcCompat="@color/colorFire" />
+
+        <TextView
+            android:id="@+id/txtName2"
+            android:layout_width="145dp"
+            android:layout_height="60dp"
+            android:textAlignment="gravity"
+            android:gravity="center"
+            android:layout_toLeftOf="@+id/txtLastName2"
+            android:layout_toRightOf="@+id/imgProfilePic"
+            android:text="Name" />
+
+        <TextView
+            android:id="@+id/txtStatu2"
+            android:layout_width="145dp"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/txtName2"
+            android:layout_toLeftOf="@+id/txtCreationTime"
+            android:layout_toRightOf="@+id/imgProfilePic"
+            android:textAlignment="gravity"
+            android:gravity="center"
+            android:text="Statu" />
+
+        <TextView
+            android:id="@+id/txtCreationTime"
+            android:layout_width="145dp"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/txtName2"
+            android:layout_alignParentRight="true"
+            android:textAlignment="gravity"
+            android:gravity="center"
+            android:layout_marginTop="0dp"
+            android:layout_marginRight="0dp"
+            android:text="Creation Time" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/EventİnfoLinearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="154dp"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/EventTimeLocLinearLayout"
+            android:layout_width="115dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/txtEventLocation"
+                android:layout_width="match_parent"
+                android:layout_height="72dp"
+                android:layout_centerInParent="true"
+                android:textAlignment="gravity"
+                android:gravity="center"
+                android:text="Event Location" />
+
+            <TextView
+                android:id="@+id/txtEventTime"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/txtEventTime"
+                android:textAlignment="gravity"
+                android:gravity="center"
+                android:layout_alignParentBottom="true"
+                android:text="Event Time" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/txtPost"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="Description" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/EventBannerRelativLayout"
+        android:layout_width="match_parent"
+        android:layout_height="142dp">
+
+        <ImageView
+            android:id="@+id/imgEventBanner"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:srcCompat="?attr/actionBarDivider" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/ButtonsLinearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/imgbtnNotJoin"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            app:srcCompat="?attr/actionBarDivider" />
+
+        <ImageButton
+            android:id="@+id/imgbtnJoin"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            app:srcCompat="?attr/actionBarDivider" />
+
+        <ImageButton
+            android:id="@+id/imgbtnLike"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            app:srcCompat="?attr/actionBarDivider" />
+    </LinearLayout>
+
+</LinearLayout>
