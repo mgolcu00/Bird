@@ -6,10 +6,59 @@ import java.util.Comparator;
 import java.util.Date;
 
 public class PostModel {
+    String UserId;
+    String PostId;
     String CreatingDate;
+    String EventDate;
+    String EventLocation;
     String Posttext;
     String PostImageUrl;
     UserModel user;
+    public PostModel(){
+
+    }
+    public PostModel(String userId, String postId, String creatingDate, String eventDate, String eventLocation, String posttext, String postImageUrl, UserModel user) {
+        UserId = userId;
+        PostId = postId;
+        CreatingDate = creatingDate;
+        EventDate = eventDate;
+        EventLocation = eventLocation;
+        Posttext = posttext;
+        PostImageUrl = postImageUrl;
+        this.user = user;
+    }
+
+    public String getPostId() {
+        return PostId;
+    }
+
+    public void setPostId(String postId) {
+        PostId = postId;
+    }
+
+    public String getEventDate() {
+        return EventDate;
+    }
+
+    public void setEventDate(String eventDate) {
+        EventDate = eventDate;
+    }
+
+    public String getEventLocation() {
+        return EventLocation;
+    }
+
+    public void setEventLocation(String eventLocation) {
+        EventLocation = eventLocation;
+    }
+
+    public String getUserId() {
+        return UserId;
+    }
+
+    public void setUserId(String userId) {
+        UserId = userId;
+    }
 
     public String getPostImageUrl() {
         return PostImageUrl;
