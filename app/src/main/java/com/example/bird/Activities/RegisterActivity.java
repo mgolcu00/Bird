@@ -70,12 +70,14 @@ public class RegisterActivity extends AppCompatActivity {
     private String TAG = "TAG";
     String ImageUrl = "";
     private final int PICK_IMAGE_REQUEST = 71;
+    FirebaseUser userF;
+    UserModel user;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(activty_register);
-
+        userF = mAuth.getCurrentUser();
         btnSend = findViewById(R.id.btnSend);
         edtEmail = findViewById(R.id.edtEmail);
         edtName = findViewById(R.id.edtName);
@@ -118,7 +120,7 @@ public class RegisterActivity extends AppCompatActivity {
                     });
                     snackbar.show();
                 } else {
-                    UserModel user = new UserModel(name, email, pass, lastname, DateValue,);
+                    user = new UserModel(userF.getUid(), name, lastname, email, pass, DateValue, "", "05xx xxx xx xx", "Uye", "Sakarya");
 
                     uploadImage(mStorageRef);
                     if (ImageUrl.equals("")) {
@@ -196,7 +198,7 @@ public class RegisterActivity extends AppCompatActivity {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                             progressDialog.dismiss();
-
+                            user.setImageUrl(ImageUrl);
                             Toast.makeText(getApplicationContext(), "Uploaded", Toast.LENGTH_SHORT).show();
                         }
                     })
@@ -221,14 +223,14 @@ public class RegisterActivity extends AppCompatActivity {
 
     void Reg(final UserModel user, final View v) {
         pb.setVisibility(View.VISIBLE);
-        mAuth.createUserWithEmailAndPassword(user.getEmail(), user.getPass())
+        mAuth.createUserWithEmailAndPassword(user.getEmail(), user.getPassword())
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "createUserWithEmail:success");
-                            FirebaseUser userF = mAuth.getCurrentUser();
+
                             //database
                             myRef.child(Objects.requireNonNull(userF.getUid())).setValue(user);
                             snackbar.make(v, "Register success", Snackbar.LENGTH_LONG).show();
