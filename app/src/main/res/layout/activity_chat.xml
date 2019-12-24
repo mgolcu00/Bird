@@ -40,15 +40,21 @@
             android:layout_gravity="center_vertical"
             android:layout_weight="1"/>
 
-        <Button
-            android:id="@+id/sendButton"
-            style="@android:style/Widget.Material.Light.Button"
-            android:layout_width="44dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="bottom"
-            android:background="@drawable/circle_shape"
-            android:drawableEnd="@drawable/ic_send_24px"
-            android:enabled="false" />
+        <LinearLayout
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/sendButton"
+                style="@android:style/Widget.Material.Light.Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:background="@drawable/ic_send_white_24dp"
+
+                android:enabled="false" />
+        </LinearLayout>
 
     </LinearLayout>
 
@@ -60,4 +66,5 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"/>
+
 </RelativeLayout>

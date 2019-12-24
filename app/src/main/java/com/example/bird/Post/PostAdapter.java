@@ -9,18 +9,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.graphics.drawable.RoundedBitmapDrawable;
 import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.bird.Profile.ProfileActivty;
 import com.example.bird.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -72,8 +69,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.Holder> {
         TextView TextContent;
         TextView StatusText;
         ImageView profilePic;
-        String PhotoUrl;
+        String PhotoUrl,PostImageUrl;
         ProgressBar pb;
+        ImageView PostImage;
         public Holder(@NonNull View itemView) {
             super(itemView);
             pb=itemView.findViewById(R.id.pbItem);
@@ -84,12 +82,16 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.Holder> {
             TextContent = itemView.findViewById(R.id.txtTextArea);
             StatusText = itemView.findViewById(R.id.txtStatus2);
             profilePic=itemView.findViewById(R.id.imgProfilePic);
+            PostImage=itemView.findViewById(R.id.PostImageAdded);
         }
 
         public void setData(PostData post, int position) {
-
             this.PhotoUrl = post.getUser().getImageUrl();
-            readStorage();
+            this.PostImageUrl=post.getPostImageUrl();
+            readStorage(PhotoUrl,profilePic);
+            if(PostImageUrl != ""){
+                readStorage(PostImageUrl,PostImage);
+            }
             this.nameTextView.setText(post.getUser().getName());
             this.lastNameTextView.setText(post.getUser().getLastname());
             this.TextContent.setText(post.getPosttext());
@@ -97,7 +99,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.Holder> {
 
         }
 
-        public void readStorage(){
+        public void readStorage(String PhotoUrl, final ImageView i){
             pathRef = mStorageRef.child("images/" + PhotoUrl);
             mStorageRef.child("images/" + PhotoUrl).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                 @Override
@@ -111,11 +113,12 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.Holder> {
                         try {
                             URL url = new URL(uri.toString());
                             Bitmap image = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-                            System.out.println("byte count:" + image.getByteCount());
-                            Bitmap b =  Bitmap.createScaledBitmap(image,250,250,false);
-                            RoundedBitmapDrawable circularBitmapDrawable = RoundedBitmapDrawableFactory.create(itemView.getResources(), b);
-                            circularBitmapDrawable.setCircular(true);
-                            profilePic.setImageDrawable(circularBitmapDrawable);
+//                            System.out.println("byte count:" + image.getByteCount());
+//                            Bitmap b =  Bitmap.createScaledBitmap(image,250,250,false);
+//                            RoundedBitmapDrawable circularBitmapDrawable = RoundedBitmapDrawableFactory.create(itemView.getResources(), b);
+//                            circularBitmapDrawable.setCircular(true);
+//                            i.setImageDrawable(circularBitmapDrawable);
+                            i.setImageBitmap(image);
                             pb.setVisibility(View.INVISIBLE);
                         } catch (IOException e) {
                             e.printStackTrace();

@@ -4,6 +4,9 @@ public class Messeage {
     private String id;
     private String text;
     private String name;
+    private String ppUrl;
+
+
 
     public Messeage(String text, String name) {
         this.text = text;
@@ -12,6 +15,14 @@ public class Messeage {
 
     public Messeage() {
 
+    }
+
+    public String getPpUrl() {
+        return ppUrl;
+    }
+
+    public void setPpUrl(String ppUrl) {
+        this.ppUrl = ppUrl;
     }
 
     public String getId() {

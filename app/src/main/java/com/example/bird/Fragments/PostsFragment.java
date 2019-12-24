@@ -73,6 +73,7 @@ public class PostsFragment extends Fragment {
                     postD.setUser(ds.child("user").getValue(UserC.class));
                     postD.setPosttext(ds.child("posttext").getValue(String.class));
                     postD.setCreatingDate(ds.child("creatingDate").getValue(String.class));
+                    postD.setPostImageUrl(ds.child("postImageUrl").getValue(String.class));
                     posts.add(postD);
                 }
                 Collections.sort(posts, PostData.pstDate);

@@ -67,13 +67,14 @@ public class ProfileFragment extends Fragment {
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.activity_profile, container, false);
-        pb=v.findViewById(R.id.pbProfile);
+        pb = v.findViewById(R.id.pbProfile);
         mStorageRef = FirebaseStorage.getInstance().getReference();
         textName = v.findViewById(R.id.txtUserName);
         textLastName = v.findViewById(R.id.txtLastName);
         profilePhoto = v.findViewById(R.id.profilePhoto);
         btnLogout = v.findViewById(R.id.btnLogout);
-
+        auth = FirebaseAuth.getInstance();
+        Read(auth.getCurrentUser().getUid());
         pb.setVisibility(View.VISIBLE);
 
         btnLogout.setOnClickListener(new View.OnClickListener() {
@@ -83,9 +84,6 @@ public class ProfileFragment extends Fragment {
                 startActivity(new Intent(getContext(), SplashActivity.class));
             }
         });
-
-        auth = FirebaseAuth.getInstance();
-        Read(auth.getCurrentUser().getUid());
 
 
         return v;
@@ -105,6 +103,8 @@ public class ProfileFragment extends Fragment {
                 String PhotoUrl = (String) dataSnapshot.child(url).child("imageUrl").getValue();
                 //Toast.makeText("TAGG",PhotoUrl,Toast.LENGTH_LONG).show();
                 Log.i("Tag(pp)", PhotoUrl);
+
+
                 pathRef = mStorageRef.child("images/" + PhotoUrl);
                 mStorageRef.child("images/" + PhotoUrl).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
@@ -148,9 +148,6 @@ public class ProfileFragment extends Fragment {
         });
     }
 
-    private void Wait() {
-
-    }
 
 }
 

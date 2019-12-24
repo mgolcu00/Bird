@@ -1,9 +1,14 @@
 package com.example.bird.Chat;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,17 +17,24 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.Scroller;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.drawable.RoundedBitmapDrawable;
+import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.bird.Login.RegisterActivity;
 import com.example.bird.R;
+import com.example.bird.Utils.GlideUtil;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.firebase.ui.database.SnapshotParser;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -30,6 +42,11 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
+import java.io.IOException;
+import java.net.URL;
 
 public class ChatActivity extends AppCompatActivity {
     public static class MessageViewHolder extends RecyclerView.ViewHolder {
@@ -43,7 +60,7 @@ public class ChatActivity extends AppCompatActivity {
             messageTextView = (TextView) itemView.findViewById(R.id.messageTextView);
             messageImageView = (ImageView) itemView.findViewById(R.id.messageImageView);
             messengerTextView = (TextView) itemView.findViewById(R.id.messengerTextView);
-            messengerImageView = (ImageView) itemView.findViewById(R.id.messengerImageView);
+            messengerImageView = (ImageView) itemView.findViewById(R.id.messagePp);
         }
     }
 
@@ -64,7 +81,8 @@ public class ChatActivity extends AppCompatActivity {
     private DatabaseReference UserRef;
     private DatabaseReference MesseageRef;
     private String MESSAGES_CHILD;
-
+    private StorageReference mStorageRef;
+    private StorageReference pathRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,7 +95,7 @@ public class ChatActivity extends AppCompatActivity {
         database = FirebaseDatabase.getInstance();
         UserRef = database.getReference("users");
         MesseageRef = database.getReference(MESSAGES_CHILD);
-
+        mStorageRef = FirebaseStorage.getInstance().getReference();
         // Initialize Firebase Auth
         mFirebaseAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
@@ -98,6 +116,33 @@ public class ChatActivity extends AppCompatActivity {
                     Log.d("TAG", "\nName     : " + name +
                             "\nLastname : " + lastname);
                     mUsername = name;
+                    String PhotoUrl = (String) dataSnapshot.child(mFirebaseAuth.getCurrentUser().getUid()).child("imageUrl").getValue();
+                    pathRef = mStorageRef.child("images/" + PhotoUrl);
+                    mStorageRef.child("images/" + PhotoUrl).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            Log.i("Tag(pp)", uri.toString());
+                            int SDK_INT = android.os.Build.VERSION.SDK_INT;
+                            if (SDK_INT > 8) {
+                                StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
+                                        .permitAll().build();
+                                StrictMode.setThreadPolicy(policy);
+                                try {
+                                    URL url = new URL(uri.toString());
+                                    mPhotoUrl = String.valueOf(url);
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception exception) {
+                            // Handle any errors
+                        }
+                    });
+
                 }
 
                 @Override
@@ -152,6 +197,7 @@ public class ChatActivity extends AppCompatActivity {
                     viewHolder.messageTextView.setVisibility(TextView.VISIBLE);
                     viewHolder.messageImageView.setVisibility(ImageView.GONE);
                 }
+                GlideUtil.glide_use_Circle(getApplicationContext(), mPhotoUrl, viewHolder.messengerImageView);
                 viewHolder.messengerTextView.setText(friendlyMessage.getName());
             }
         };
@@ -175,6 +221,10 @@ public class ChatActivity extends AppCompatActivity {
 
         mMessageRecyclerView.setAdapter(mFirebaseAdapter);
         mMessageEditText = (EditText) findViewById(R.id.messageEditText);
+        mMessageEditText.setScroller(new Scroller(getApplicationContext()));
+        mMessageEditText.setMaxLines(2);
+        mMessageEditText.setVerticalScrollBarEnabled(true);
+        mMessageEditText.setMovementMethod(new ScrollingMovementMethod());
         mMessageEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -202,6 +252,7 @@ public class ChatActivity extends AppCompatActivity {
                 Messeage messeage = new
                         Messeage(mMessageEditText.getText().toString(),
                         mUsername);
+                messeage.setPpUrl(mPhotoUrl);
                 Log.i("TEST", "Name: " + messeage.getName() + " | Text: " + messeage.getText());
                 mFirebaseDatabaseReference.child(MESSAGES_CHILD)
                         .push().setValue(messeage);
@@ -247,7 +298,7 @@ public class ChatActivity extends AppCompatActivity {
                 String lastname = (String) dataSnapshot.child(url).child("lastname").getValue();
                 Log.d("TAG", "\nName     : " + name +
                         "\nLastname : " + lastname);
-
+                mPhotoUrl=(String) dataSnapshot.child(url).child("ppUrl").getValue();
 
             }
 

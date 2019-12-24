@@ -1,7 +1,5 @@
 package com.example.bird.Post;
 
-import android.media.Image;
-
 import com.example.bird.Login.UserC;
 
 import java.text.ParseException;
@@ -12,8 +10,16 @@ import java.util.Date;
 public class PostData {
     String CreatingDate;
     String Posttext;
-    //Image image;
+    String PostImageUrl;
     UserC user;
+
+    public String getPostImageUrl() {
+        return PostImageUrl;
+    }
+
+    public void setPostImageUrl(String postImageUrl) {
+        PostImageUrl = postImageUrl;
+    }
 
     public String getCreatingDate() {
         return CreatingDate;
@@ -47,17 +53,17 @@ public class PostData {
             String date1 = s1.getCreatingDate().toUpperCase();
             String date2 = s2.getCreatingDate().toUpperCase();
 
-            Date datex1 = new Date(),datex2 = new Date();
+            Date datex1 = new Date(), datex2 = new Date();
             datex1.setTime(datex1.getTime());
             datex2.setTime(datex2.getTime());
             SimpleDateFormat format = new SimpleDateFormat("MMMM d, yyyy");
             try {
-                 datex1 = format.parse(date1);
+                datex1 = format.parse(date1);
             } catch (ParseException e) {
                 e.printStackTrace();
             }
             try {
-                 datex2 = format.parse(date2);
+                datex2 = format.parse(date2);
             } catch (ParseException e) {
                 e.printStackTrace();
             }

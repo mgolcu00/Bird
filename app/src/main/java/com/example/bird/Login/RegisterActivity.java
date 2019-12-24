@@ -1,11 +1,8 @@
 package com.example.bird.Login;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -22,9 +19,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.bird.Chat.ChatRoomsActivity;
+import com.example.bird.Activities.MainActivity;
 import com.example.bird.R;
-import com.google.android.gms.auth.api.signin.internal.Storage;
+import com.example.bird.Utils.GlideUtil;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -39,7 +36,6 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.yalantis.ucrop.UCrop;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -64,7 +60,7 @@ public class RegisterActivity extends AppCompatActivity {
     Intent intent;
     DatabaseReference myRef;
     FirebaseDatabase database;
-    Uri filePath,filePath2;
+    Uri filePath, filePath2;
     Date date;
     ProgressBar pb;
     Snackbar snackbar;
@@ -106,13 +102,18 @@ public class RegisterActivity extends AppCompatActivity {
                 date = new Date();
                 String DateValue = dateFormat.format(date);
 
-                if (!pass.equals(pass2) && ImageUrl != "") {
+                if (name.equals("")) {
+                    snackbar.make(v, "isim boş olamaz ", Snackbar.LENGTH_LONG).show();
+                } else if (lastname == "") {
+                    snackbar.make(v, "Soyisim boş olamaz ", Snackbar.LENGTH_LONG).show();
+                } else if (email.equals("")) {
+                    snackbar.make(v, "email boş olamaz ", Snackbar.LENGTH_LONG).show();
+                } else if (!pass.equals(pass2)) {
                     snackbar.make(v, "Passwords doesnt mach", Snackbar.LENGTH_LONG).setAction("Try Again", new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             edtPass.setText(null);
                             edtPass2.setText(null);
-
                         }
                     });
                     snackbar.show();
@@ -120,7 +121,12 @@ public class RegisterActivity extends AppCompatActivity {
                     UserC user = new UserC(name, email, pass, lastname, DateValue);
 
                     uploadImage(mStorageRef);
-                    user.setImageUrl(ImageUrl);
+                    if (ImageUrl.equals("")) {
+                        user.setImageUrl("Bird_Logo_png.png");
+                    } else {
+                        user.setImageUrl(ImageUrl);
+                    }
+
                     Reg(user, v);
 
                 }
@@ -146,58 +152,37 @@ public class RegisterActivity extends AppCompatActivity {
 
     }
 
-//        @Override
-//    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK
-//                && data != null && data.getData() != null) {
-//            filePath = data.getData();
-//            filePath2=data.getData();
-//            try {
-//                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
-//                UCrop.of(filePath, filePath2)
-//                        .withAspectRatio(16, 16)
-//                        .withMaxResultSize(128, 128)
-//                        .start(this);
-//               Bitmap bm = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath2);
-//                profileImage.setImageBitmap(bm);
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//    }
-
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK && requestCode == UCrop.REQUEST_CROP) {
-            filePath=data.getData();
-
-            try {
-                Uri resultUri = UCrop.getOutput(data);
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), resultUri);
-                profileImage.setImageBitmap(bitmap);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        } else if (resultCode == UCrop.RESULT_ERROR) {
-            final Throwable cropError = UCrop.getError(data);
-        }
-    }
 
     private void chooseImage() {
-
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
-        UCrop.of(intent.getData(), intent.getData())
-                .withAspectRatio(16, 16)
-                .withMaxResultSize(128, 128)
-                .start(this);
-       // startActivityForResult(Intent.createChooser(intent, "Select Picture"), UCrop.REQUEST_CROP);
+        startActivityForResult(Intent.createChooser(intent, "Fotoğraf Seç"), PICK_IMAGE_REQUEST);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK
+                && data != null && data.getData() != null) {
+            filePath = data.getData();
+            try {
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
+
+                //Drawable d = new BitmapDrawable(getResources(),bitmap);
+                //getOptimizeImage GOI = new getOptimizeImage(profileImage, String.valueOf(filePath));
+                //GlideUtil.glide_use2(getApplicationContext(), String.valueOf(filePath), profileImage, 2048, 4096);
+                GlideUtil.glide_use_Circle(getApplicationContext(), String.valueOf(filePath), profileImage);
+                //GlideUtil.glideTransform(getApplicationContext(), 2, profileImage);
+                //profileImage.setImageBitmap(bitmap);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        }
+    }
+
+    //Upload
     private void uploadImage(StorageReference storageReference) {
 
         if (filePath != null) {
@@ -248,7 +233,7 @@ public class RegisterActivity extends AppCompatActivity {
                             myRef.child(Objects.requireNonNull(userF.getUid())).setValue(user);
                             snackbar.make(v, "Register success", Snackbar.LENGTH_LONG).show();
                             pb.setVisibility(View.INVISIBLE);
-                            intent = new Intent(getApplicationContext(), ChatRoomsActivity.class);
+                            intent = new Intent(getApplicationContext(), MainActivity.class);
                             startActivity(intent);
                             //updateUI(user);
 
@@ -263,34 +248,6 @@ public class RegisterActivity extends AppCompatActivity {
 
                     }
                 });
-
-    }
-
-    private void performCrop(Uri picUri) {
-        try {
-            Intent cropIntent = new Intent("com.android.camera.action.CROP");
-            // indicate image type and Uri
-            cropIntent.setDataAndType(picUri, "image/*");
-            // set crop properties here
-            cropIntent.putExtra("crop", true);
-            // indicate aspect of desired crop
-            cropIntent.putExtra("aspectX", 1);
-            cropIntent.putExtra("aspectY", 1);
-            // indicate output X and Y
-            cropIntent.putExtra("outputX", 128);
-            cropIntent.putExtra("outputY", 128);
-            // retrieve data on return
-            cropIntent.putExtra("return-data", true);
-            // start the activity - we handle returning in onActivityResult
-            startActivityForResult(cropIntent, PIC_CROP);
-        }
-        // respond to users whose devices do not support the crop action
-        catch (ActivityNotFoundException anfe) {
-            // display an error message
-            String errorMessage = "Whoops - your device doesn't support the crop action!";
-            Toast toast = Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT);
-            toast.show();
-        }
     }
 
 }

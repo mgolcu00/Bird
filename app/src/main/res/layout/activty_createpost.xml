@@ -19,6 +19,21 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
+        android:id="@+id/btnAddImage"
+        android:layout_width="98dp"
+        android:layout_height="29dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="22dp"
+        android:background="@color/colorFire"
+        android:drawableTop="@drawable/ic_add_white_24dp"
+        android:text="+"
+        app:layout_constraintBottom_toTopOf="@+id/maTxt"
+        app:layout_constraintStart_toEndOf="@+id/btnPostExit"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <Button
         android:id="@+id/btnPostSend"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -38,13 +53,23 @@
         android:layout_marginStart="10dp"
         android:layout_marginTop="90dp"
         android:layout_marginEnd="10dp"
-        android:layout_marginBottom="50dp"
         android:ems="10"
         android:gravity="start|top"
         android:inputType="textMultiLine"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/PostImageAdded"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/PostImageAdded"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/maTxt"
+        tools:srcCompat="@tools:sample/avatars[12]" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
