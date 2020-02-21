@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Bird</string>
+    <string name="app_name">BT</string>
     <string name="sign_in">Sign-in</string>
     <string name="title_activity_navigation_avtivty">NavigationAvtivty</string>
     <string name="title_home">Home</string>

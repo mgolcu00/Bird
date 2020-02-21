@@ -57,9 +57,9 @@ public class ProfileFragment extends Fragment {
     private TextView textMobileNumb;
     private TextView textAddress;
     private Spinner spinner;
-    private ImageButton btnMail;
-    private ImageButton btnPhone;
-    private ImageButton btnLocation;
+    private Button btnMail;
+    private Button btnPhone;
+    private Button btnLocation;
     private ImageView profilePhoto;
     private StorageReference mStorageRef;
     private StorageReference pathRef;
@@ -166,7 +166,9 @@ public class ProfileFragment extends Fragment {
                 textName.setText(user.getUsername());
                 textLastName.setText(user.getLastname());
                 txtStatus.setText(user.getStatus());
-
+                btnMail.setText(user.getEmail());
+                btnLocation.setText(user.getLocation());
+                btnPhone.setText(user.getPhoneNumber());
 
             }
 

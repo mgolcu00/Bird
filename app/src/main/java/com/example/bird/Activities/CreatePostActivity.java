@@ -74,8 +74,8 @@ public class CreatePostActivity extends AppCompatActivity {
         btnExit = findViewById(R.id.btnexitCreatePost);
         btnImageAdd=findViewById(R.id.AddImage);
         edtDescription=findViewById(R.id.edtDescirption);
-        edtLocation=findViewById(R.id.edtLocation);
-        edtDate=findViewById(R.id.edtDate);
+        edtLocation=findViewById(R.id.edtLocationCreatePost);
+        edtDate=findViewById(R.id.edtDateCreatePost);
         PostImageView=findViewById(R.id.imgPostimage);
         storage=FirebaseStorage.getInstance();
         mStorageRef= storage.getReference();

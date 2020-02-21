@@ -72,6 +72,9 @@ public class PostsFragment extends Fragment {
                     postD.setPosttext(ds.child("posttext").getValue(String.class));
                     postD.setCreatingDate(ds.child("creatingDate").getValue(String.class));
                     postD.setPostImageUrl(ds.child("postImageUrl").getValue(String.class));
+                    postD.setUserId(ds.child("userId").getValue(String.class));
+                    postD.setEventDate(ds.child("eventDate").getValue(String.class));
+                    postD.setEventLocation(ds.child("eventLocation").getValue(String.class));
                     posts.add(postD);
                 }
                 Collections.sort(posts, PostModel.pstDate);

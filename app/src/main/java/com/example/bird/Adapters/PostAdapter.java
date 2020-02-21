@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.StrictMode;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -31,8 +32,11 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import org.w3c.dom.Text;
+
 import java.io.IOException;
 import java.net.URL;
+import java.net.UnknownServiceException;
 import java.util.ArrayList;
 
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.Holder> {
@@ -98,20 +102,62 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.Holder> {
             mRef = database.getReference("users");
         }
 
-        public void setData(PostModel post, int position) {
+        public void setData(final PostModel post, int position) {
 
-            Read(post.getUserId());
-            this.PhotoUrl = user.getImageUrl();
-            this.PostImageUrl = post.getPostImageUrl();
-            readStorage(PhotoUrl, profilePic);
-            if (PostImageUrl != "") {
-                readStorage(PostImageUrl, PostImage);
+            Runnable r = () -> {
+
+                mRef = database.getReference("users/" + post.getPostId());
+                mRef.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+
+                        user = dataSnapshot.getValue(UserModel.class);
+                        try {
+
+                            Thread.sleep(25000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                   /*
+                   *  try {
+                        user2 = dataSnapshot.child(url).<UserModel>getValue(UserModel.class);
+                    } catch (Exception e) {
+                        Log.i("Tag(pp)", e.getMessage());
+                    }
+                   * */
+
+
+                        Log.i("Tag(pp)", user.getImageUrl());
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError error) {
+                        // Failed to read value
+                        Log.w("TAG", "Failed to read value.", error.toException());
+                    }
+                });
+
+            };
+
+            Thread t = new Thread(r);
+
+            t.start();
+            if (user != null) {
+                this.PhotoUrl = user.getImageUrl();
+                this.PostImageUrl = post.getPostImageUrl();
+                readStorage(PhotoUrl, profilePic);
+                if (!PostImageUrl.equals("")) {
+                    readStorage(PostImageUrl, PostImage);
+                }
+                this.nameTextView.setText(user.getUsername());
+                this.lastNameTextView.setText(user.getLastname());
+                this.TextContent.setText(post.getPosttext());
+                this.StatusText.setText(user.getStatus());
+
+            } else {
+                user = Read(post.getUserId());
             }
-            this.nameTextView.setText(user.getUsername());
-            this.lastNameTextView.setText(user.getLastname());
-            this.TextContent.setText(post.getPosttext());
-            this.StatusText.setText(user.getStatus());
-
         }
 
         public void readStorage(String PhotoUrl, final ImageView i) {
@@ -150,19 +196,12 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.Holder> {
 
         }
 
-        void Read(final String url) {
-            mRef.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    user = dataSnapshot.child(url).getValue(UserModel.class);
-                    Log.i("Tag(pp)", user.getImageUrl());
-                }
-                @Override
-                public void onCancelled(DatabaseError error) {
-                    // Failed to read value
-                    Log.w("TAG", "Failed to read value.", error.toException());
-                }
-            });
+        UserModel user2 = null;
+
+        UserModel Read(final String url) {
+
+
+            return user2;
         }
     }
 

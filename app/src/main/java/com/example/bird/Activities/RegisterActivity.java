@@ -53,6 +53,7 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText edtEmail;
     private EditText edtPass;
     private StorageReference mStorageRef;
+    private EditText edtPhone;
     EditText edtPass2;
     EditText edtName;
     EditText edtLastname;
@@ -80,6 +81,7 @@ public class RegisterActivity extends AppCompatActivity {
 
         btnSend = findViewById(R.id.btnSend);
         edtEmail = findViewById(R.id.edtEmail);
+        edtPhone = findViewById(R.id.edtPhone);
         edtName = findViewById(R.id.edtName);
         edtPass = findViewById(R.id.edtPassReg);
         edtPass2 = findViewById(R.id.edtPassReg2);
@@ -102,6 +104,7 @@ public class RegisterActivity extends AppCompatActivity {
                 String pass2 = String.valueOf(edtPass2.getText());
                 String name = String.valueOf(edtName.getText());
                 String lastname = String.valueOf(edtLastname.getText());
+                String phone = String.valueOf(edtPhone.getText());
                 date = new Date();
                 String DateValue = dateFormat.format(date);
 
@@ -121,11 +124,11 @@ public class RegisterActivity extends AppCompatActivity {
                     });
                     snackbar.show();
                 } else {
-                    user = new UserModel("", name, lastname, email, pass, DateValue, "", "05xx xxx xx xx", "Uye", "Sakarya");
+                    user = new UserModel("", name, lastname, email, pass, DateValue, "", phone, "Uye", "Sakarya");
 
                     uploadImage(mStorageRef);
                     if (ImageUrl.equals("")) {
-                        user.setImageUrl("Bird_Logo_png.png");
+                        user.setImageUrl("icinde_normal.png");
                     } else {
                         user.setImageUrl(ImageUrl);
                     }
@@ -231,7 +234,7 @@ public class RegisterActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "createUserWithEmail:success");
-                            userF=mAuth.getCurrentUser();
+                            userF = mAuth.getCurrentUser();
                             user.setId(userF.getUid());
                             //database
                             myRef.child(Objects.requireNonNull(userF.getUid())).setValue(user);

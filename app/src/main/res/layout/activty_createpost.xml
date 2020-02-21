@@ -6,67 +6,78 @@ android:layout_height="match_parent"
 android:orientation="vertical"
 android:weightSum="1">
 
-<LinearLayout
-    android:id="@+id/createPostButtons"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_weight="0.9"
-    android:orientation="horizontal"
-    android:weightSum="0.9">
-
-    <Button
-        android:id="@+id/AddImage"
+    <LinearLayout
+        android:id="@+id/EdittextsArea"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="0.3" />
+        android:layout_weight="0.1"
+        android:orientation="vertical"
+        android:weightSum="1">
 
-    <Button
-        android:id="@+id/btnexitCreatePost"
+        <EditText
+            android:id="@+id/edtDescirption"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.3"
+            android:hint="Açıklama" />
+
+        <EditText
+            android:id="@+id/edtLocationCreatePost"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.3"
+            android:hint="Lokasyon" />
+
+        <EditText
+            android:id="@+id/edtDateCreatePost"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.3"
+            android:hint="Tarih" />
+
+        <ImageView
+            android:id="@+id/imgPostimage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_weight="0.1"
+            android:maxWidth="200dp"
+            android:maxHeight="200dp"
+            android:paddingBottom="9dp"
+            android:paddingTop="9dp"
+
+            app:srcCompat="@drawable/ic_emoji_people_24px" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/createPostButtons"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="0.3" />
+        android:layout_weight="0.9"
+        android:orientation="horizontal"
+        android:weightSum="0.9">
 
-    <Button
-        android:id="@+id/btnSendCreatePost"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="0.3" />
+        <Button
+            android:id="@+id/AddImage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.3"
+            android:text="Resim Yükle" />
 
-</LinearLayout>
+        <Button
+            android:id="@+id/btnexitCreatePost"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.3"
+            android:text="İptal" />
 
-<LinearLayout
-    android:id="@+id/EdittextsArea"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_weight="0.1"
-    android:orientation="vertical"
-    android:weightSum="0.9">
+        <Button
+            android:id="@+id/btnSendCreatePost"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.3"
+            android:text="Paylaş" />
 
-    <EditText
-        android:id="@+id/edtDescirption"
-        android:layout_weight="0.3"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
-    <EditText
-        android:id="@+id/edtLocationCreatePost"
-        android:layout_weight="0.4"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
-    <EditText
-        android:id="@+id/edtDateCreatePost"
-        android:layout_weight="0.4"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
-    <ImageView
-        android:id="@+id/imgPostimage"
-        android:maxHeight="200dp"
-        android:maxWidth="200dp"
-        android:layout_gravity="center"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:srcCompat="@drawable/ic_emoji_people_24px" />
-</LinearLayout>
+    </LinearLayout>
 </LinearLayout>

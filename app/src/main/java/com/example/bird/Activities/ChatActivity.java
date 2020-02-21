@@ -81,6 +81,13 @@ public class ChatActivity extends AppCompatActivity {
     private StorageReference pathRef;
 
     @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent goHome = new Intent(this,MainActivity.class);
+        startActivity(goHome);
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);

@@ -2,27 +2,44 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="75dp"
+    android:background="@drawable/room_item_drawable"
+    android:orientation="horizontal"
     android:layout_marginLeft="5dp"
     android:layout_marginTop="10dp"
     android:layout_marginRight="5dp"
-    android:background="@color/colorTeal"
-    android:orientation="vertical">
+    android:layout_weight="0.3"
+    android:weightSum="1">
 
-
-    <TextView
-        android:id="@+id/RoomTitle"
+    <ImageView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Android "
-        android:textColor="@color/colorWhite"
-        android:textSize="24sp" />
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:layout_weight="0.8"
+        android:src="@drawable/ic_android_black_24dp" />
 
-    <TextView
-        android:id="@+id/RoomUserCount"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="kişi aktif "
-        android:textColor="@color/colorWhite"
-        android:textSize="12sp" />
+        android:layout_height="75dp"
 
+
+        android:orientation="vertical">
+
+
+        <TextView
+            android:id="@+id/RoomTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Android "
+            android:textColor="@color/colorPrimary"
+            android:textSize="24sp" />
+
+        <TextView
+            android:id="@+id/RoomUserCount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="kişi aktif "
+            android:textColor="@color/colorPrimary"
+            android:textSize="12sp" />
+
+    </LinearLayout>
 </LinearLayout>
